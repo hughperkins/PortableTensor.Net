@@ -46,9 +46,12 @@ public class Tensor<T>
         res += string.Join(", ", dims);
         res += ")";
         if(dims.Length == 1) {
-            res += "{";
-            res += string.Join(", ", data);
-            res += "}";
+            res = "{";
+            for(int x = 0; x < dims[0]; x++) {
+                res += data[Offset(new int[]{x})];
+                res += ", ";
+            }
+            res += "},\n";
         } else if( dims.Length == 2) {
             res += "{";
             for(int y = 0; y < dims[0]; y++) {
@@ -101,6 +104,22 @@ public class Tensor<T>
         int[] newStrides = (int[])strides.Clone();
         int[] newDims = (int[])dims.Clone();
         newDims[d] = end - start;
+        return new Tensor<T>(newOffset, newDims, newStrides, data);
+    }
+
+    public Tensor<T> Select(int d, int idx) {
+        int newOffset = startOffset + idx * strides[d];
+        int[] newStrides = new int[dims.Length - 1];
+        int[] newDims = new int[dims.Length - 1];
+        for(int _d=0; _d < dims.Length; _d++) {
+            if(_d < d) {
+                newStrides[_d] = strides[_d];
+                newDims[_d] = dims[_d];
+            } else if(_d > d) {
+                newStrides[_d - 1] = strides[_d];
+                newDims[_d - 1] = dims[_d];
+            }
+        }
         return new Tensor<T>(newOffset, newDims, newStrides, data);
     }
 }

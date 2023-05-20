@@ -42,5 +42,8 @@ public class TestTensor : MonoBehaviour
         Debug.Log($"a {a}");
         Debug.Log($"b {b}");
         Debug.Log($"c {c}");
+
+        var d = c.Select(1, 1);
+        Debug.Log($"d {d}");
     }
 }
