@@ -25,6 +25,48 @@ public class Tensor<T>
         startOffset = 0;
     }
 
+    public Tensor(int d0) {
+        int[] dims = new int[]{d0};
+        this.dims = (int[])dims.Clone();
+        int size = Size();
+        this.data = new T[size];
+        int _stride = 1;
+        this.strides = new int[dims.Length];
+        for(int d = dims.Length - 1; d >= 0; d--) {
+            strides[d] = _stride;
+            _stride *= dims[d];
+        }
+        startOffset = 0;
+    }
+
+    public Tensor(int d0, int d1) {
+        int[] dims = new int[]{d0, d1};
+        this.dims = (int[])dims.Clone();
+        int size = Size();
+        this.data = new T[size];
+        int _stride = 1;
+        this.strides = new int[dims.Length];
+        for(int d = dims.Length - 1; d >= 0; d--) {
+            strides[d] = _stride;
+            _stride *= dims[d];
+        }
+        startOffset = 0;
+    }
+
+    public Tensor(int d0, int d1, int d2) {
+        int[] dims = new int[]{d0, d1, d2};
+        this.dims = (int[])dims.Clone();
+        int size = Size();
+        this.data = new T[size];
+        int _stride = 1;
+        this.strides = new int[dims.Length];
+        for(int d = dims.Length - 1; d >= 0; d--) {
+            strides[d] = _stride;
+            _stride *= dims[d];
+        }
+        startOffset = 0;
+    }
+
     public Tensor(int startOffset, int[] dims, int[] strides, T[] data) {
         // does NOT copy the data
         this.startOffset = startOffset;
@@ -81,6 +123,24 @@ public class Tensor<T>
         }
         set {
             data[Offset(idx)] = value;
+        }
+    }
+
+    public T this[int idx] {
+        get {
+            return data[Offset(new int[]{idx})];
+        }
+        set {
+            data[Offset(new int[]{idx})] = value;
+        }
+    }
+
+    public T this[int d0, int d1] {
+        get {
+            return data[Offset(new int[]{d0, d1})];
+        }
+        set {
+            data[Offset(new int[]{d0, d1})] = value;
         }
     }
 
